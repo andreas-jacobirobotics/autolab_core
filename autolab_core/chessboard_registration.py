@@ -99,7 +99,8 @@ class CameraChessboardRegistration:
             depth_ims = None
             for i in range(num_images):
                 start = time.time()
-                small_color_im, new_depth_im, _ = sensor.frames()
+                small_color_im, new_depth_im = sensor.frames()
+                # small_color_im, new_depth_im, _ = sensor.frames()
                 end = time.time()
                 logging.info("Frames Runtime: %.3f" % (end - start))
                 if depth_ims is None:
@@ -119,7 +120,7 @@ class CameraChessboardRegistration:
             if vis and corner_px is not None:
                 plt.figure()
                 plt.imshow(big_color_im.data)
-                for i in range(sx):
+                for i in range(corner_px.shape[0]):
                     plt.scatter(corner_px[i, 0], corner_px[i, 1], s=25, c="b")
                 plt.show()
 
@@ -135,7 +136,7 @@ class CameraChessboardRegistration:
             if vis:
                 plt.figure()
                 plt.imshow(small_color_im.data)
-                for i in range(sx):
+                for i in range(small_corner_px.shape[0]):
                     plt.scatter(
                         small_corner_px[i, 0],
                         small_corner_px[i, 1],
@@ -169,6 +170,7 @@ class CameraChessboardRegistration:
             k += 1
 
         # fit a plane to the chessboard corners
+        import ipdb; ipdb.set_trace()
         X = np.c_[
             points_3d_plane.x_coords,
             points_3d_plane.y_coords,

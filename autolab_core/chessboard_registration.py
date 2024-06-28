@@ -170,7 +170,7 @@ class CameraChessboardRegistration:
             k += 1
 
         # fit a plane to the chessboard corners
-        import ipdb; ipdb.set_trace()
+        # import ipdb; ipdb.set_trace()
         X = np.c_[
             points_3d_plane.x_coords,
             points_3d_plane.y_coords,
@@ -185,6 +185,15 @@ class CameraChessboardRegistration:
         if flip_normal:
             n = -n
         mean_point_plane = points_3d_plane.mean()
+
+        if config["debug"]:
+            fig = plt.figure()
+            ax = fig.add_subplot(projection='3d')
+            ax.scatter(points_3d_plane.x_coords, points_3d_plane.y_coords, points_3d_plane.z_coords)
+            ax.set_xlabel('x')
+            ax.set_ylabel('y')
+            ax.set_ylabel('z')
+            plt.show()
 
         # find x-axis of the chessboard coordinates on the fitted plane
         T_camera_table = RigidTransform(
